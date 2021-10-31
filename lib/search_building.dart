@@ -142,3 +142,13 @@ String mark_name(text){
   if(search(text) >= long.length)return ec;
   else return name[search(text)];
 }
+class CitiesService {
+  static final List<String> cities = name;
+  static List<String> getSuggestions(String query) {
+    List<String> matches = <String>[];
+    matches.addAll(cities);
+
+    matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+    return matches;
+  }
+}

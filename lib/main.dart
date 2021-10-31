@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:appbar_textfield/appbar_textfield.dart';
 import 'package:styled_text/styled_text.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import 'search_building.dart';
 import 'apikey.dart';
@@ -63,7 +64,7 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar:AppBarTextField(
+        /*appBar:AppBarTextField(
             title:Text(guide),
             onChanged:(text){
               cn = text;
@@ -79,7 +80,37 @@ class _MapScreenState extends State<MapScreen> {
               main();
               _getPolyline();
             }
+        ),*/
+        /*appBar: Column(
+          children: <Widget>[
+        TypeAheadField(
+        textFieldConfiguration: TextFieldConfiguration(
+            autofocus: true,
+            style: DefaultTextStyle.of(context).style.copyWith(
+                fontStyle: FontStyle.italic
+            ),
+            decoration: InputDecoration(
+                border: OutlineInputBorder()
+            )
         ),
+        suggestionsCallback: (pattern) async {
+          return await CitiesService.getSuggestions(pattern);
+        },
+        itemBuilder: (context, suggestion) {
+          return ListTile(
+            leading: Icon(Icons.shopping_cart),
+            title: Text('suggestion'),
+            subtitle: Text('suggestion2'),
+          );
+        },
+        onSuggestionSelected: (suggestion) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => MyApp()
+          ));
+        },
+      ),
+          ],
+        ),*/
         drawer: Drawer(
           child: ListView(
             children: <Widget>[
@@ -150,6 +181,34 @@ class _MapScreenState extends State<MapScreen> {
                         fontSize:20
                     )
                 )
+            ),
+            Container(
+              child:TypeAheadField(
+                textFieldConfiguration: TextFieldConfiguration(
+                    autofocus: true,
+                    style: DefaultTextStyle.of(context).style.copyWith(
+                        fontStyle: FontStyle.italic
+                    ),
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder()
+                    )
+                ),
+                suggestionsCallback: (pattern) async {
+                  return await CitiesService.getSuggestions(pattern);
+                },
+                itemBuilder: (context,String suggestion) {
+                  return ListTile(
+                    leading: Icon(Icons.shopping_cart),
+                  title: Text(suggestion),
+                    //subtitle: Text('suggestion2'),
+                  );
+                },
+                onSuggestionSelected: (suggestion) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => MyApp()
+                  ));
+                },
+              ),
             )
           ],
         ),

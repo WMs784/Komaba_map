@@ -40,6 +40,7 @@ dependencies:
   flutter_polyline_points: ^1.0.0
   appbar_textfield: ^1.0.1+1
   adobe_xd: ^2.0.0+1
+  flutter_typeahead: ^3.2.1
   #slim: ^4.2.8
   #dio: ^3.0.10
   #circular_reveal_animation: ^2.0.0
