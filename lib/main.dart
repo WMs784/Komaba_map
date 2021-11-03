@@ -41,7 +41,7 @@ class _MapScreenState extends State<MapScreen> {
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
-  String googleAPIKey = api_key;
+  String googleAPIKey = map_api_key;
 //目的地の緯度経度
 
   @override
