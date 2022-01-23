@@ -8,6 +8,7 @@ import 'dart:math';
 
 import 'search_building.dart';
 import 'apikey.dart';
+import 'package:geolocator/geolocator.dart';
 
 
 void main() => runApp(MyApp());
@@ -34,6 +35,7 @@ class MapScreen extends StatefulWidget {
   _MapScreenState createState() => _MapScreenState();
 }
 
+
 class _MapScreenState extends State<MapScreen> {
   late GoogleMapController mapController;
   double _originLatitude = ori_lat, _originLongitude = ori_long;//駒場東大前駅
@@ -44,6 +46,7 @@ class _MapScreenState extends State<MapScreen> {
   PolylinePoints polylinePoints = PolylinePoints();
   String googleAPIKey = api_key;
 //目的地の緯度経度
+
 
   @override
   void initState() {
@@ -58,6 +61,16 @@ class _MapScreenState extends State<MapScreen> {
         BitmapDescriptor.defaultMarkerWithHue(90));
     _getPolyline();
   }
+
+  double _currentlatitude = 0;
+  double _currentlongitude = 0;
+  Future<void> getLocation() async {
+    // 現在の位置を返す
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    _currentlatitude = position.latitude;
+    _currentlongitude = position.longitude;
+  } //現在地座標の取得
 
   @override
   Widget build(BuildContext context) {
@@ -99,8 +112,9 @@ class _MapScreenState extends State<MapScreen> {
           child: ListView(
             children: <Widget>[
               DrawerHeader(
+                child: Text('setting'),
                 // child: StyledText(
-                //   text: '<set/>&space;'+setting,
+                //   text: '<set/>& space;'+setting,
                 //   style: TextStyle(
                 //     fontSize: 24
                 //   ),
@@ -111,7 +125,6 @@ class _MapScreenState extends State<MapScreen> {
                 //     ),
                 //   },
                 // ),
-                child: Text('settings'),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                 ),
@@ -162,13 +175,19 @@ class _MapScreenState extends State<MapScreen> {
                 padding: EdgeInsets.all(5.0),
                 alignment: Alignment.topCenter,
                 child:Text(mark_name(cn),
-                    style: TextStyle(
-                        fontSize:20
-                    )
+                    // style: TextStyle(
+                    //     fontSize:20
+                    // )
                 )
             )
           ],
         ),
+        // floatingActionButton: FloatingActionButton.extended(
+        //   onPressed: () {
+        //     _getPosition;
+        //   },
+        //   label: Text("現在地に変更"),
+        // ),
       ),
     );
   }
@@ -209,4 +228,22 @@ class _MapScreenState extends State<MapScreen> {
     }
     _addPolyLine();
   }
-}
+
+  _getPosition() async {
+    _getPolyline() async {
+      //clearOverlay;
+      PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+        googleAPIKey,
+        PointLatLng(_currentlatitude, _currentlongitude),
+        PointLatLng(dest_lat(cn), dest_long(cn)),
+        travelMode: TravelMode.walking,
+      );
+      if (result.points.isNotEmpty) {
+        result.points.forEach((PointLatLng point) {
+          polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+        });
+      }
+      _addPolyLine();
+    }
+   }// 現在地からのルートを表示（ボタンに対応）
+  }
