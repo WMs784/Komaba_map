@@ -3,7 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:appbar_textfield/appbar_textfield.dart';
-//import 'package:styled_text/styled_text.dart';
+import 'package:styled_text/styled_text.dart';
 import 'dart:math';
 
 import 'search_building.dart';
