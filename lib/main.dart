@@ -99,18 +99,19 @@ class _MapScreenState extends State<MapScreen> {
           child: ListView(
             children: <Widget>[
               DrawerHeader(
-                child: StyledText(
-                  text: '<set/>&space;'+setting,
-                  style: TextStyle(
-                    fontSize: 24
-                  ),
-                  tags: {
-                    'set': StyledTextIconTag(
-                      Icons.settings,
-                      size: 30,
-                    ),
-                  },
-                ),
+                // child: StyledText(
+                //   text: '<set/>&space;'+setting,
+                //   style: TextStyle(
+                //     fontSize: 24
+                //   ),
+                //   tags: {
+                //     'set': StyledTextIconTag(
+                //       Icons.settings,
+                //       size: 30,
+                //     ),
+                //   },
+                // ),
+                child: Text('settings'),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                 ),
