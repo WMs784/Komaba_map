@@ -3,7 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:appbar_textfield/appbar_textfield.dart';
-import 'package:styled_text/styled_text.dart';
+//import 'package:styled_text/styled_text.dart';
 import 'dart:math';
 
 import 'search_building.dart';
@@ -112,18 +112,19 @@ class _MapScreenState extends State<MapScreen> {
           child: ListView(
             children: <Widget>[
               DrawerHeader(
-                child: StyledText(
-                  text: '<set/>& space;'+setting,
-                  style: TextStyle(
-                    fontSize: 24
-                  ),
-                  tags: {
-                    'set': StyledTextIconTag(
-                      Icons.settings,
-                      size: 30,
-                    ),
-                  },
-                ),
+                child: Text('setting'),
+                // child: StyledText(
+                //   text: '<set/>& space;'+setting,
+                //   style: TextStyle(
+                //     fontSize: 24
+                //   ),
+                //   tags: {
+                //     'set': StyledTextIconTag(
+                //       Icons.settings,
+                //       size: 30,
+                //     ),
+                //   },
+                // ),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                 ),
@@ -174,19 +175,19 @@ class _MapScreenState extends State<MapScreen> {
                 padding: EdgeInsets.all(5.0),
                 alignment: Alignment.topCenter,
                 child:Text(mark_name(cn),
-                    style: TextStyle(
-                        fontSize:20
-                    )
+                    // style: TextStyle(
+                    //     fontSize:20
+                    // )
                 )
             )
           ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            _getPosition;
-          },
-          label: Text("現在地に変更"),
-        ),
+        // floatingActionButton: FloatingActionButton.extended(
+        //   onPressed: () {
+        //     _getPosition;
+        //   },
+        //   label: Text("現在地に変更"),
+        // ),
       ),
     );
   }
