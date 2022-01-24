@@ -175,9 +175,9 @@ class _MapScreenState extends State<MapScreen> {
                 padding: EdgeInsets.all(5.0),
                 alignment: Alignment.topCenter,
                 child:Text(mark_name(cn),
-                    // style: TextStyle(
-                    //     fontSize:20
-                    // )
+                    style: TextStyle(
+                        fontSize:20
+                    )
                 )
             )
           ],
