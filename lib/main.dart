@@ -42,7 +42,7 @@ class _MapScreenState extends State<MapScreen> {
   double _originLatitude = cur_lat,
       _originLongitude = cur_lng; //駒場東大前駅
   double _destLatitude = dest_lat(cn),
-      _destLongitude = dest_long(cn);
+      _destLongitude = dest_lng(cn);
   Map<MarkerId, Marker> markers = {};
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
@@ -61,7 +61,7 @@ class _MapScreenState extends State<MapScreen> {
         BitmapDescriptor.defaultMarker);
 
     /// destination marker
-    _addMarker(LatLng(dest_lat(cn), dest_long(cn)), "destination",
+    _addMarker(LatLng(dest_lat(cn), dest_lng(cn)), "destination",
         BitmapDescriptor.defaultMarkerWithHue(90));
     _getPolyline();
   }
@@ -83,13 +83,13 @@ class _MapScreenState extends State<MapScreen> {
             title: Text(guide),
             onChanged: (text) {
               cn = text;
-              _addMarker(LatLng(dest_lat(cn), dest_long(cn)), "destination",
+              _addMarker(LatLng(dest_lat(cn), dest_lng(cn)), "destination",
                   BitmapDescriptor.defaultMarkerWithHue(90));
               if (search(cn) >= 100) {
                 mapController.animateCamera(
                   CameraUpdate.newCameraPosition(
                     CameraPosition(
-                      target: LatLng(dest_lat(cn), dest_long(cn)),
+                      target: LatLng(dest_lat(cn), dest_lng(cn)),
                       zoom: 17.5,
                     ),
                   ),
@@ -163,7 +163,7 @@ class _MapScreenState extends State<MapScreen> {
           children: <Widget>[
             GoogleMap(
               initialCameraPosition: CameraPosition(
-                  target: LatLng(dest_lat(cn), dest_long(cn)), zoom: 17.5),
+                  target: LatLng(dest_lat(cn), dest_lng(cn)), zoom: 17.5),
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
               tiltGesturesEnabled: true,
@@ -239,7 +239,7 @@ class _MapScreenState extends State<MapScreen> {
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       googleAPIKey,
       PointLatLng(setOriLat(ori_lat), setOriLng(ori_lng)),
-      PointLatLng(dest_lat(cn), dest_long(cn)),
+      PointLatLng(dest_lat(cn), dest_lng(cn)),
       travelMode: TravelMode.walking,
       //wayPoints: [PolylineWayPoint(location: "Sabo, Yaba Lagos Nigeria")]
     );
@@ -295,7 +295,7 @@ class _setOriginButtonState extends State<setOriginButton>{
 //     PolylineResult result = polylinePoints.getRouteBetweenCoordinates(
 //       googleAPIKey,
 //       PointLatLng(_originLatitude, _originLongitude),
-//       PointLatLng(dest_lat(cn), dest_long(cn)),
+//       PointLatLng(dest_lat(cn), dest_lng(cn)),
 //       travelMode: TravelMode.walking,
 //       //wayPoints: [PolylineWayPoint(location: "Sabo, Yaba Lagos Nigeria")]
 //     );
