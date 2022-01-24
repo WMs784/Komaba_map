@@ -112,7 +112,6 @@ class _MapScreenState extends State<MapScreen> {
           child: ListView(
             children: <Widget>[
               DrawerHeader(
-                //child: Text('setting'),
                 child: StyledText(
                   text: '<set/>&space;'+setting,
                   style: TextStyle(
