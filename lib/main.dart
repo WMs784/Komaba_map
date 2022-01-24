@@ -8,6 +8,7 @@ import 'dart:math';
 
 import 'search_building.dart';
 import 'apikey.dart';
+import 'map_setting.dart';
 import 'package:geolocator/geolocator.dart';
 
 
@@ -38,13 +39,16 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   late GoogleMapController mapController;
-  double _originLatitude = ori_lat, _originLongitude = ori_long;//駒場東大前駅
-  double _destLatitude = dest_lat(cn), _destLongitude = dest_long(cn);
+  double _originLatitude = cur_lat,
+      _originLongitude = cur_lng; //駒場東大前駅
+  double _destLatitude = dest_lat(cn),
+      _destLongitude = dest_long(cn);
   Map<MarkerId, Marker> markers = {};
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
   String googleAPIKey = api_key;
+
 //目的地の緯度経度
 
 
@@ -53,7 +57,7 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
 
     /// origin marker
-    _addMarker(LatLng(_originLatitude, _originLongitude), "origin",
+    _addMarker(setOrigin(_originLatitude, _originLongitude), "origin",
         BitmapDescriptor.defaultMarker);
 
     /// destination marker
@@ -62,31 +66,31 @@ class _MapScreenState extends State<MapScreen> {
     _getPolyline();
   }
 
-  double _currentlatitude = 0;
-  double _currentlongitude = 0;
   Future<void> getLocation() async {
     // 現在の位置を返す
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    _currentlatitude = position.latitude;
-    _currentlongitude = position.longitude;
+    cur_lat = position.latitude;
+    cur_lng = position.longitude;
   } //現在地座標の取得
+
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar:AppBarTextField(
-            title:Text(guide),
-            onChanged:(text){
+        appBar: AppBarTextField(
+            title: Text(guide),
+            onChanged: (text) {
               cn = text;
-              _addMarker(LatLng(dest_lat(cn), dest_long(cn)), "destination", BitmapDescriptor.defaultMarkerWithHue(90));
-              if(search(cn) >= 100){
+              _addMarker(LatLng(dest_lat(cn), dest_long(cn)), "destination",
+                  BitmapDescriptor.defaultMarkerWithHue(90));
+              if (search(cn) >= 100) {
                 mapController.animateCamera(
                   CameraUpdate.newCameraPosition(
                     CameraPosition(
-                      target: LatLng(dest_lat(cn),dest_long(cn)),
-                      zoom:17.5,
+                      target: LatLng(dest_lat(cn), dest_long(cn)),
+                      zoom: 17.5,
                     ),
                   ),
                 );
@@ -95,17 +99,19 @@ class _MapScreenState extends State<MapScreen> {
                 mapController.animateCamera(
                     CameraUpdate.newLatLngBounds(
                         LatLngBounds(
-                          southwest: LatLng(ori_lat, min(ori_long,_destLongitude)),
-                          northeast: LatLng(dest_lat(cn), max(ori_long,_destLongitude)),
+                          southwest: LatLng(
+                              ori_lat, min(ori_lng, _destLongitude)),
+                          northeast: LatLng(
+                              dest_lat(cn), max(ori_lng, _destLongitude)),
                         ),
                         100.0
                     )
                 );
               }
-                polylines = {};
-                polylineCoordinates = [];
-                main();
-                _getPolyline();
+              polylines = {};
+              polylineCoordinates = [];
+              //main();
+              _getPolyline();
             }
         ),
         drawer: Drawer(
@@ -113,9 +119,9 @@ class _MapScreenState extends State<MapScreen> {
             children: <Widget>[
               DrawerHeader(
                 child: StyledText(
-                  text: '<set/>&space;'+setting,
+                  text: '<set/>&space;' + setting,
                   style: TextStyle(
-                    fontSize: 24
+                      fontSize: 24
                   ),
                   tags: {
                     'set': StyledTextIconTag(
@@ -125,12 +131,14 @@ class _MapScreenState extends State<MapScreen> {
                   },
                 ),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: Theme
+                      .of(context)
+                      .primaryColor,
                 ),
               ),
               ListTile(
                 title: Text("日本語"),
-                onTap: (){
+                onTap: () {
                   guide = "教室番号";
                   ec = "正しい教室番号を入力してください";
                   setting = "言語設定";
@@ -140,7 +148,7 @@ class _MapScreenState extends State<MapScreen> {
               ),
               ListTile(
                 title: Text("English"),
-                onTap: (){
+                onTap: () {
                   guide = "classroom number";
                   ec = "Enter the correct classroom number.";
                   setting = "language setting";
@@ -155,7 +163,7 @@ class _MapScreenState extends State<MapScreen> {
           children: <Widget>[
             GoogleMap(
               initialCameraPosition: CameraPosition(
-                  target: LatLng(dest_lat(cn),dest_long(cn)), zoom: 17.5),
+                  target: LatLng(dest_lat(cn), dest_long(cn)), zoom: 17.5),
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
               tiltGesturesEnabled: true,
@@ -173,23 +181,35 @@ class _MapScreenState extends State<MapScreen> {
                 margin: EdgeInsets.all(10.0),
                 padding: EdgeInsets.all(5.0),
                 alignment: Alignment.topCenter,
-                child:Text(mark_name(cn),
+                child: Text(mark_name(cn),
                     style: TextStyle(
-                        fontSize:20
+                        fontSize: 20
                     )
                 )
             )
           ],
         ),
-        // floatingActionButton: FloatingActionButton.extended(
-        //   onPressed: () {
-        //     _getPosition;
-        //   },
-        //   label: Text("現在地に変更"),
-        // ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            setState(() {
+              mapController.animateCamera(
+                CameraUpdate.newCameraPosition(
+                  CameraPosition(
+                    target: setOrigin(_originLatitude,_originLongitude),
+                    zoom: 17.5,
+                  ),
+                ),
+              );
+              main();
+              _getPolyline();
+            });
+          },
+          label: Text("現在地に変更"),
+        ),
       ),
     );
   }
+
   void _onMapCreated(GoogleMapController controller) async {
     mapController = controller;
   }
@@ -198,7 +218,10 @@ class _MapScreenState extends State<MapScreen> {
     MarkerId markerId = MarkerId(id);
     Marker marker =
     Marker(
-        markerId: markerId, icon: descriptor, position: position,infoWindow: InfoWindow(title: mark_name(cn))
+        markerId: markerId,
+        icon: descriptor,
+        position: position,
+        infoWindow: InfoWindow(title: mark_name(cn))
     );
     markers[markerId] = marker;
   }
@@ -212,10 +235,10 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   _getPolyline() async {
-    //clearOverlay;
+    main();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       googleAPIKey,
-      PointLatLng(_originLatitude, _originLongitude),
+      PointLatLng(setOriLat(ori_lat), setOriLng(ori_lng)),
       PointLatLng(dest_lat(cn), dest_long(cn)),
       travelMode: TravelMode.walking,
       //wayPoints: [PolylineWayPoint(location: "Sabo, Yaba Lagos Nigeria")]
@@ -227,22 +250,59 @@ class _MapScreenState extends State<MapScreen> {
     }
     _addPolyLine();
   }
+}
+class setOriginButton extends StatefulWidget{
+  const setOriginButton({Key? key}) : super(key: key);
 
-  // _getPosition() async {
-  //   _getPolyline() async {
-  //     //clearOverlay;
-  //     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-  //       googleAPIKey,
-  //       PointLatLng(_currentlatitude, _currentlongitude),
-  //       PointLatLng(dest_lat(cn), dest_long(cn)),
-  //       travelMode: TravelMode.walking,
-  //     );
-  //     if (result.points.isNotEmpty) {
-  //       result.points.forEach((PointLatLng point) {
-  //         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-  //       });
-  //     }
-  //     _addPolyLine();
-  //   }
-  //  }// 現在地からのルートを表示（ボタンに対応）
+  @override
+  _setOriginButtonState createState() => _setOriginButtonState();
+}
+class _setOriginButtonState extends State<setOriginButton>{
+  double _originLatitude = 0,_originLongitude = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(
+      child: FloatingActionButton.extended(
+        onPressed: () {
+          setState(() {
+            _originLatitude = 35.6598812;
+            _originLongitude = 139.6865876;
+            // mapController.animateCamera(
+            //   CameraUpdate.newCameraPosition(
+            //     CameraPosition(
+            //       target: LatLng(_originLatitude,_originLongitude),
+            //       zoom: 17.5,
+            //     ),
+            //   )
+            // );
+            main();
+            //_getPolyline();
+          });
+        },
+        label: Text("現在地に変更"),
+      ),
+    );
   }
+}
+// class _getPolyline extends StatelessWidget{
+//   const _getPolyline({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     // TODO: implement build
+//     PolylineResult result = polylinePoints.getRouteBetweenCoordinates(
+//       googleAPIKey,
+//       PointLatLng(_originLatitude, _originLongitude),
+//       PointLatLng(dest_lat(cn), dest_long(cn)),
+//       travelMode: TravelMode.walking,
+//       //wayPoints: [PolylineWayPoint(location: "Sabo, Yaba Lagos Nigeria")]
+//     );
+//     if (result.points.isNotEmpty) {
+//       result.points.forEach((PointLatLng point) {
+//         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+//       });
+//     }
+//   }
+// }

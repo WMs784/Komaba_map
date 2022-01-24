@@ -18,7 +18,8 @@ String guide = "教室番号";
 String message = "正しい教室番号を入力してください";
 String setting = "言語設定";
 int e = 100,d = 1000;
-double ori_lat = 35.6588007, ori_long = 139.6845282;//デフォルトのカメラ位置として使用する駒場東大前駅
+double ori_lat = 35.6588007, ori_lng = 139.6845282;//デフォルトのカメラ位置として使用する駒場東大前駅
+double cur_lat = 35.6598812, cur_lng = 139.6865876;
 
 int search(cn){
   if(cn == null) return d;
@@ -135,7 +136,7 @@ double dest_lat(text){
   else return lat[search(text)];
 }
 double dest_long(text){
-  if(search(text) >= long.length)return ori_long;
+  if(search(text) >= long.length)return ori_lng;
   else return long[search(text)];
 }
 String mark_name(text){
