@@ -44,7 +44,7 @@ class _MapScreenState extends State<MapScreen> {
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
-  //String googleAPIKey = api_key;
+  String googleAPIKey = api_key;
 //目的地の緯度経度
 
 
@@ -59,7 +59,7 @@ class _MapScreenState extends State<MapScreen> {
     /// destination marker
     _addMarker(LatLng(dest_lat(cn), dest_long(cn)), "destination",
         BitmapDescriptor.defaultMarkerWithHue(90));
-    //_getPolyline();
+    _getPolyline();
   }
 
   double _currentlatitude = 0;
@@ -105,7 +105,7 @@ class _MapScreenState extends State<MapScreen> {
                 polylines = {};
                 polylineCoordinates = [];
                 main();
-                //_getPolyline();
+                _getPolyline();
             }
         ),
         drawer: Drawer(
@@ -212,22 +212,22 @@ class _MapScreenState extends State<MapScreen> {
     setState(() {});
   }
 
-  // _getPolyline() async {
-  //   //clearOverlay;
-  //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-  //     googleAPIKey,
-  //     PointLatLng(_originLatitude, _originLongitude),
-  //     PointLatLng(dest_lat(cn), dest_long(cn)),
-  //     travelMode: TravelMode.walking,
-  //     //wayPoints: [PolylineWayPoint(location: "Sabo, Yaba Lagos Nigeria")]
-  //   );
-  //   if (result.points.isNotEmpty) {
-  //     result.points.forEach((PointLatLng point) {
-  //       polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-  //     });
-  //   }
-  //   _addPolyLine();
-  // }
+  _getPolyline() async {
+    //clearOverlay;
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      googleAPIKey,
+      PointLatLng(_originLatitude, _originLongitude),
+      PointLatLng(dest_lat(cn), dest_long(cn)),
+      travelMode: TravelMode.walking,
+      //wayPoints: [PolylineWayPoint(location: "Sabo, Yaba Lagos Nigeria")]
+    );
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      });
+    }
+    _addPolyLine();
+  }
 
   // _getPosition() async {
   //   _getPolyline() async {
