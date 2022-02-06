@@ -47,7 +47,7 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
         //Properties properties = new Properties()
@@ -58,7 +58,7 @@ android {
 
         applicationId "com.search.mycampus"
         minSdkVersion 25
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

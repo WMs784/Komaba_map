@@ -11,8 +11,14 @@ import 'apikey.dart';
 import 'map_setting.dart';
 import 'package:geolocator/geolocator.dart';
 
-
+int count = 0;
+double cur_lat = 0,cur_lng = 0;
 void main() => runApp(MyApp());
+
+void getLocate() async{
+  Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  print(position);
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -36,7 +42,6 @@ class MapScreen extends StatefulWidget {
   _MapScreenState createState() => _MapScreenState();
 }
 
-
 class _MapScreenState extends State<MapScreen> {
   late GoogleMapController mapController;
   double _originLatitude = cur_lat,
@@ -55,9 +60,9 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-
+    getLocation();
     /// origin marker
-    _addMarker(setOrigin(_originLatitude, _originLongitude), "origin",
+    _addMarker(LatLng(_originLatitude, _originLongitude), "origin",
         BitmapDescriptor.defaultMarker);
 
     /// destination marker
@@ -66,7 +71,7 @@ class _MapScreenState extends State<MapScreen> {
     _getPolyline();
   }
 
-  Future<void> getLocation() async {
+  void getLocation() async {
     // 現在の位置を返す
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -189,23 +194,23 @@ class _MapScreenState extends State<MapScreen> {
             )
           ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            setState(() {
-              mapController.animateCamera(
-                CameraUpdate.newCameraPosition(
-                  CameraPosition(
-                    target: setOrigin(_originLatitude,_originLongitude),
-                    zoom: 17.5,
-                  ),
-                ),
-              );
-              main();
-              _getPolyline();
-            });
-          },
-          label: Text("現在地に変更"),
-        ),
+        // floatingActionButton: FloatingActionButton.extended(
+        //   onPressed: () {
+        //     setState(() {
+        //       mapController.animateCamera(
+        //         CameraUpdate.newCameraPosition(
+        //           CameraPosition(
+        //             target: setOrigin(_originLatitude,_originLongitude),
+        //             zoom: 17.5,
+        //           ),
+        //         ),
+        //       );
+        //       main();
+        //       _getPolyline();
+        //     });
+        //   },
+        //   label: Text("現在地に変更"),
+        // ),
       ),
     );
   }
@@ -238,7 +243,7 @@ class _MapScreenState extends State<MapScreen> {
     main();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       googleAPIKey,
-      PointLatLng(setOriLat(ori_lat), setOriLng(ori_lng)),
+      PointLatLng(ori_lat, (ori_lng)),
       PointLatLng(dest_lat(cn), dest_lng(cn)),
       travelMode: TravelMode.walking,
       //wayPoints: [PolylineWayPoint(location: "Sabo, Yaba Lagos Nigeria")]
@@ -266,9 +271,10 @@ class _setOriginButtonState extends State<setOriginButton>{
     return Container(
       child: FloatingActionButton.extended(
         onPressed: () {
+          count++;
           setState(() {
-            _originLatitude = 35.6598812;
-            _originLongitude = 139.6865876;
+            _originLatitude = setOriLat(count);
+            _originLongitude = setOriLng(count);
             // mapController.animateCamera(
             //   CameraUpdate.newCameraPosition(
             //     CameraPosition(
