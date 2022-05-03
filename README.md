@@ -1,20 +1,31 @@
-# mycampusmap2
+# アプリ「駒場教室検索」
 
-A new Flutter project.
+## 概要
+本郷テックガレージ主催「Project Fund」応募作品として制作されたアプリです．
 
-恩田です
-西ヶ谷です
-園田です
+キャンパスに通う機会が少なく道を覚えられないという課題意識から，
+教室名を入力するとその教室がある建物名と，そこまでの案内をしてくれるアプリを制作しました．
 
-## Getting Started
+## 環境
+- Flutter 2.10.0
+- Dart 2.16.0
+- DevTools 2.9.2
 
-This project is a starting point for a Flutter application.
+## テスト
+このアプリはGoogle Cloud Platform のAPIを使用しているため，テストするにはそのAPIKeyが必要になります．
+`lib`ディレクトリ配下に`apikey.dart`ファイルを作り，
+```dart:apikey.dart
+String api_key = "your_api_key";
+```
+と記述してください．`your_api_key`の部分には自分で取得したAPIKeyを入力してください．
 
-A few resources to get you started if this is your first Flutter project:
+また，`android`ディレクトリ配下の`local.properties`ファイルに
+```dart:android/local.properties
+...
+MAPS_API_KEY=your_api_key//これを追加
+```
+の一行を追加してください．
+一部packageがnull safetyに対応していないため，実行コマンドは
+`flutter run --no-sound-null-safety`でお願いします．
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+参考資料 : [url](https://qiita.com/WMs784/items/4b22305e013c44896a4b#libmaindart%E3%81%B8%E3%81%AE%E6%9B%B8%E3%81%8D%E5%87%BA%E3%81%97)

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 List<double> lat = [35.6598397,35.6593117,35.6607411,35.6605338,35.6610601,35.6599659,
   35.6607347,35.6605018,35.659832,35.6606455,35.6603639,35.660281,35.6605001,35.6591107,
   35.6605044,35.6598812,35.6611821,35.6611838];
-List<double> long = [139.6848356,139.6836729, 139.6860089,139.6863858,139.6844503,139.6873125,
+List<double> lng = [139.6848356,139.6836729, 139.6860089,139.6863858,139.6844503,139.6873125,
   139.6845799,139.6854947,139.6838042,139.6849458,139.684239,139.683548,139.6837391,139.6853381,
   139.6877397,139.6865876,139.6836969,139.6851203];
 List<int> min_num = [101,21,101,011,511,1,721,110,900,101,1101,1211,1311,1];//教室番号の最小値
@@ -18,7 +18,8 @@ String guide = "教室番号";
 String message = "正しい教室番号を入力してください";
 String setting = "言語設定";
 int e = 100,d = 1000;
-double ori_lat = 35.6588007, ori_long = 139.6845282;//デフォルトのカメラ位置として使用する駒場東大前駅
+double ori_lat = 35.6588007, ori_lng = 139.6845282;//デフォルトのカメラ位置として使用する駒場東大前駅
+// double cur_lat = 35.6598812, cur_lng = 139.6865876;
 
 int search(cn){
   if(cn == null) return d;
@@ -134,11 +135,11 @@ double dest_lat(text){
   if(search(text) >= lat.length)return ori_lat;
   else return lat[search(text)];
 }
-double dest_long(text){
-  if(search(text) >= long.length)return ori_long;
-  else return long[search(text)];
+double dest_lng(text){
+  if(search(text) >= lng.length)return ori_lng;
+  else return lng[search(text)];
 }
 String mark_name(text){
-  if(search(text) >= long.length)return ec;
+  if(search(text) >= lng.length)return ec;
   else return name[search(text)];
 }
