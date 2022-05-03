@@ -28,4 +28,4 @@ MAPS_API_KEY=your_api_key//これを追加
 一部packageがnull safetyに対応していないため，実行コマンドは
 `flutter run --no-sound-null-safety`でお願いします．
 
-参考資料 : [url](https://qiita.com/WMs784/items/4b22305e013c44896a4b#libmaindart%E3%81%B8%E3%81%AE%E6%9B%B8%E3%81%8D%E5%87%BA%E3%81%97)
+参考資料 : [Flutterでの開発でAPIKeyを隠してGithubにあげる方法](https://qiita.com/WMs784/items/4b22305e013c44896a4b#libmaindart%E3%81%B8%E3%81%AE%E6%9B%B8%E3%81%8D%E5%87%BA%E3%81%97)
