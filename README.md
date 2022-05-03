@@ -6,6 +6,10 @@
 キャンパスに通う機会が少なく道を覚えられないという課題意識から，
 教室名を入力するとその教室がある建物名と，そこまでの案内をしてくれるアプリを制作しました．
 
+### 製品ページ
+[Android](https://play.google.com/store/apps/details?id=com.search.mycampus)
+[iOS](https://apps.apple.com/jp/app/%E9%A7%92%E5%A0%B4%E6%95%99%E5%AE%A4%E6%A4%9C%E7%B4%A2/id1587098446?uo=4)
+
 ## 環境
 - Flutter 2.10.0
 - Dart 2.16.0
